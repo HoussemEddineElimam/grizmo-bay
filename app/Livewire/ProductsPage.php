@@ -20,6 +20,8 @@ class ProductsPage extends Component
     public $featured;
     #[Url]
     public $sale;
+    #[Url]
+    public $price_range = 50;
     public function render()
     {   
         $products = Product::query()->where('is_active',1);
@@ -35,6 +37,9 @@ class ProductsPage extends Component
         }
         if($this->sale){
             $products->where('on_sale',1);
+        }
+        if($this->price_range){
+            $products->whereBetween('price',[0,$this->price_range]);
         }
         $brands = Brand::where('is_active',1)->get(['id','name','slug']);
         $categories = Category::where('is_active',1)->get(['id','name','slug']);
